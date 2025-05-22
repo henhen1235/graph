@@ -6,10 +6,11 @@
 using namespace std;
 
 void displays(int graph[20][20], int size, char templeter[20]);
-
+void addnode(char name, char templeter[20], int& size);
+int searcher(char search, int size, char templeter[20]);
 
 int main(){
-int size = 2;
+int size = 0;
 char templeter[20];
   for(int x = 0; x < 20; x++){
       templeter[x] = '|';
@@ -34,17 +35,77 @@ char templeter[20];
       cout << endl << "What would you like to do? (addvertex, addnode, deletevertex, deletenode, quit, print, find): ";
       cin >> i2n;
       if(strcmp(i2n, add) == 0){ // add vertex
+	char firstn;
+	char secondn;
+	int value;
+	cout << "Which two nodes would you like to link? Give the name(it is a single char)" << endl;
+	cout << "Node 1: ";
+	cin >> firstn;
+	cout << "Node 2: ";
+	cin >> secondn;
+	cout << "Value: ";
+	cin >> value;
+	int pos1 = searcher(firstn, size, templeter);
+	int pos2 = searcher(secondn, size, templeter);
+	if(pos1 == -1 || pos2 == -1){
+	  cout << "That Node does not exist" << endl;
+	}
+	graph[pos1][pos2] = value;
+	graph[pos2][pos1] = value;
+	
       }
       else if(strcmp(i2n, console) == 0){ // add node
+	char name;
+	cout << "What do you want to name this node?(it can only be a single char): " << endl;
+	cin >> name;
+	addnode(name, templeter, size);
       }
       else if(strcmp(i2n, display) == 0){// delete vertex
+	char firstn;
+        char secondn;
+        int value;
+        cout << "Which two nodes would you like to delete? Give the name(it is a single char)" << endl;
+        cout << "Node 1: ";
+        cin >> firstn;
+        cout << "Node 2: ";
+        cin >> secondn;
+        int pos1 = searcher(firstn, size, templeter);
+        int pos2 = searcher(secondn, size, templeter);
+        if(pos1 == -1 || pos2 == -1){
+          cout << "That Node does not exist" << endl;
+        }
+        graph[pos1][pos2] = -1;
+        graph[pos2][pos1] = -1;
+	
       }
       else if(strcmp(i2n, sear) == 0){// print
 	displays(graph, size, templeter);
       }
       else if(strcmp(i2n, deletes) == 0){// delete node
-      }
+	char name;
+        cout << "What node do you want to delete?(it can only be a single char): " << endl;
+        cin >> name;
+	int pos = searcher(name, size, templeter);
+	cout << "size: " << size << endl;
+	if(pos == -1){
+	  cout << "Node DNE" << endl;
+	}
+	else{
+	  int diff = size - pos;
+	for(int x = 0; x < size; x++){
+	  graph[x][pos] = graph[x][size - 1];
+	  graph[pos][x] = graph[size -1][x];
+	}
+      	char tem1 = templeter[size-1];
+	templeter[pos] = tem1;
+	
+	templeter[size-1] = '|';
+	
+	size = size - 1;
+	}
+	}
       else if(strcmp(i2n, quit) == 0){// quit
+	break;
       }
       else if(strcmp(i2n, path) == 0){// find 
       }
@@ -57,11 +118,26 @@ it, print, find): ";
 }
 
 
-void displays(int graph[20][20], int size, char templeter[20]){
+int searcher(char search, int size, char templeter[20]){
   for(int x = 0; x < size; x++){
-    cout << templeter[x] << "   " << x << endl;
+    if(templeter[x] == search){
+      return x;
+    }
   }
-  cout<< endl << endl;
+  return -1;
+}
+
+void addnode(char name, char templeter[20], int& size){
+  templeter[size] = name;
+  size++;
+}
+
+void displays(int graph[20][20], int size, char templeter[20]){
+  cout << "Legend:" << endl;
+  for(int x = 0; x < size; x++){
+    cout << "Value: "<< x<< " - " << "Name: "<<templeter[x] << endl;
+  }
+  cout<< endl << "Vertex:"<< endl;
 
   
   cout << "  ";
