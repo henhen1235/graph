@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <vector>
 
 
 using namespace std;
@@ -8,6 +9,8 @@ using namespace std;
 void displays(int graph[20][20], int size, char templeter[20]);
 void addnode(char name, char templeter[20], int& size);
 int searcher(char search, int size, char templeter[20]);
+int paths(vector<int> vistedn, vector<int> unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add);
+
 
 int main(){
 int size = 0;
@@ -108,6 +111,37 @@ char templeter[20];
 	break;
       }
       else if(strcmp(i2n, path) == 0){// find 
+        char firstn;
+        char secondn;
+        int value;
+        cout << "Which two nodes would you like to find the path? Give the name(it is a single char)" << endl;
+        cout << "Node 1: ";
+        cin >> firstn;
+        cout << "Node 2: ";
+        cin >> secondn;
+        int pos1 = searcher(firstn, size, templeter);
+        int pos2 = searcher(secondn, size, templeter);
+        if(pos1 == -1 || pos2 == -1){
+          cout << "That Node does not exist" << endl;
+        }
+        int current = pos1;
+        int end = pos2;
+        vector<int> vistedn;
+        vector<int> unvistedn;
+        int shortest[20];
+        int previous[20];
+        for(int x = 0; x< 20; x++){
+          shortest[x] = 9999999999;
+          previous[x] = 9999999999;
+        }
+        for(int x = 0; x < size; x++){
+          vistedn.push_back(x);
+        }
+        shortest[current] = 0;
+        int add = 0;
+        paths(vistedn, unvistedn, shortest, previous, size, templeter, graph, current, add);
+
+        shortest[]
       }
       else{
         cout << "Invalid input options are: (addvertex, addnode, deletevertex, deletenode, qu\
@@ -116,7 +150,35 @@ it, print, find): ";
     }
     return 0;
 }
+//use later
+ // vistedn.erase(remove(vistedn.begin(), vistedn.end(), current), vistedn.end()); // stack over flow code. This is not mine
+  // unvistedn.push_back(current);
 
+int paths(vector<int> vistedn, vector<int> unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add){
+ 
+  int shorttemp = -1;
+  int shortpos = -1;
+  for(int x = 0; x < size; x++){
+    if(graph[x][current] != -1){
+      shortest[x] = graph[x][current] + add;
+      previous[x] = current;
+      if(graph[x][current] < shorttemp){
+        shorttemp = graph[x][current];
+        shortpos = x;
+      }
+    }
+  }
+
+  vistedn.erase(remove(vistedn.begin(), vistedn.end(), current), vistedn.end()); // stack over flow code. This is not mine
+  unvistedn.push_back(current);
+  if(shorttemp == -1){
+    return;
+  }
+  add = add + shorttemp;
+  current = shortpos;
+  paths(vistedn, unvistedn, shortest, previous, size, templeter, graph, current, add);
+
+}
 
 int searcher(char search, int size, char templeter[20]){
   for(int x = 0; x < size; x++){
