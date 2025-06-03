@@ -52,8 +52,13 @@ char templeter[20];
 	if(pos1 == -1 || pos2 == -1){
 	  cout << "That Node does not exist" << endl;
 	}
+  else if(pos1 == pos2){
+    cout << "you same node twice" << endl;
+  }
+  else{
 	graph[pos1][pos2] = value;
-	//	graph[pos2][pos1] = value;
+  }
+  //	graph[pos2][pos1] = value;
 	
       }
       else if(strcmp(i2n, console) == 0){ // add node
@@ -134,10 +139,16 @@ char templeter[20];
       cout << "starting runner" << endl;
       runner(graph, templeter, size, visited, unvisited, shortest, previous, pos, distance);
 
+      char name2;
+      cout << "What node do you want to search to?(it can only be a single char): " << endl;
+      cin >> name2;
+      int pos2 = searcher(name2, size, templeter);
+
       for(int x = 0; x< size; x++){
-	cout << shortest[x] << endl;
-	
+	      cout << shortest[x] << endl;
       }
+
+      cout << "shortest path: " << shortest[pos2] << endl;
       }      
       else{
         cout << "Invalid input options are: (addvertex, addnode, deletevertex, deletenode, qu\
@@ -155,7 +166,7 @@ void runner(int graph[20][20], char templeter[20], int size, vector<int>& visite
 
   vector<int> storage;
   for(int x = 0; x< size; x++){
-    if(graph[pos][x] != -1 && visited[x] == -1 && (shortest[x] == -1 || shortest[x] > distance + graph[pos][x])){
+    if(graph[pos][x] != -1 && (shortest[x] == -1 || shortest[x] > distance + graph[pos][x])){
       cout << "found path: " << x << endl;
       shortest[x] = graph[pos][x] + distance;
       previous[x] = pos;
@@ -167,7 +178,7 @@ void runner(int graph[20][20], char templeter[20], int size, vector<int>& visite
   for(int x = 0; x< storage.size(); x++){
     if(graph[pos][storage[x]] != -1){
       cout << "running from: " << pos << " going to: " << storage[x] << endl;
-      runner(graph, templeter, size, visited, unvisited, shortest, previous, storage[x], distance + graph[pos][x]);
+      runner(graph, templeter, size, visited, unvisited, shortest, previous, storage[x], distance + graph[pos][storage[x]]);
     }
     }
 }
