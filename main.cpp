@@ -1,3 +1,9 @@
+/*
+Henry Xu
+6/2/25
+Graph Creator
+*/
+
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -12,7 +18,7 @@ int searcher(char search, int size, char templeter[20]);
 void runner(int graph[20][20], char templeter[20], int size, vector<int>& visited, vector<int>& unvisited, vector<int>& shortest, vector<int>& previous, int pos, int distance);
 
 int main(){
-int size = 0;
+int size = 0;//setting up
 char templeter[20];
   for(int x = 0; x < 20; x++){
       templeter[x] = '|';
@@ -127,7 +133,7 @@ char templeter[20];
       vector<int> shortest;
       vector<int> previous;
 
-      for(int x = 0; x < size; x++){
+      for(int x = 0; x < size; x++){//setting up
 	unvisited.push_back(x);
 	shortest.push_back(-1);
 	previous.push_back(-1);
@@ -137,7 +143,7 @@ char templeter[20];
       shortest[pos] = 0;
       int distance = 0;
       cout << "starting runner" << endl;
-      runner(graph, templeter, size, visited, unvisited, shortest, previous, pos, distance);
+      runner(graph, templeter, size, visited, unvisited, shortest, previous, pos, distance);//runnnig algortihm
 
       char name2;
       cout << "What node do you want to search to?(it can only be a single char): " << endl;
@@ -159,7 +165,7 @@ it, print, find): ";
 }
 
 void runner(int graph[20][20], char templeter[20], int size, vector<int>& visited, vector<int>& unvisited, vector<int>& shortest, vector<int>& previous, int pos, int distance){
-  cout << "running: " << pos << endl;
+  cout << "running: " << pos << endl;//algo for diskjrtas
 
   visited[pos] = pos;
   unvisited[pos] = -1;
@@ -184,7 +190,7 @@ void runner(int graph[20][20], char templeter[20], int size, vector<int>& visite
 }
 
 
-int searcher(char search, int size, char templeter[20]){
+int searcher(char search, int size, char templeter[20]){ // find the position in the grpah
   for(int x = 0; x < size; x++){
     if(templeter[x] == search){
       return x;
@@ -194,12 +200,12 @@ int searcher(char search, int size, char templeter[20]){
 }
 
 void addnode(char name, char templeter[20], int& size){
-  templeter[size] = name;
+  templeter[size] = name;// adding
   size++;
 }
 
 void displays(int graph[20][20], int size, char templeter[20]){
-  cout << "Legend:" << endl;
+  cout << "Legend:" << endl;// printing
   for(int x = 0; x < size; x++){
     cout << "Value: "<< x<< " - " << "Name: "<<templeter[x] << endl;
   }
