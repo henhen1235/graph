@@ -149,23 +149,25 @@ it, print, find): ";
 
 void runner(int graph[20][20], char templeter[20], int size, vector<int>& visited, vector<int>& unvisited, vector<int>& shortest, vector<int>& previous, int pos, int distance){
   cout << "running: " << pos << endl;
-  vector<int> storage;
-  int tempsize = 0;
-  for(int x = 0; x< size; x++){
-    if(graph[pos][x] != -1 && visited[x] == -1 && (shortest[x] == -1 || shortest[x] > distance + graph[pos][x])){
-      cout << "found path: " << x << endl;
-      shortest[x] = graph[pos][x];
-      previous[x] = x;
-      storage.push_back(x);
-      tempsize++;
-      }
-    }    
+
   visited[pos] = pos;
   unvisited[pos] = -1;
 
-  for(int x = 0; x< tempsize; x++){
-    if(graph[pos][storage[x]] != -1 && visited[storage[x]] == -1){
-      runner(graph, templeter, size, visited, unvisited, shortest, previous, x, distance + graph[pos][x]);
+  vector<int> storage;
+  for(int x = 0; x< size; x++){
+    if(graph[pos][x] != -1 && visited[x] == -1 && (shortest[x] == -1 || shortest[x] > distance + graph[pos][x])){
+      cout << "found path: " << x << endl;
+      shortest[x] = graph[pos][x] + distance;
+      previous[x] = pos;
+      storage.push_back(x);
+      }
+    }    
+  
+  cout << "number of paths found: " << storage.size() << endl; 
+  for(int x = 0; x< storage.size(); x++){
+    if(graph[pos][storage[x]] != -1){
+      cout << "running from: " << pos << " going to: " << storage[x] << endl;
+      runner(graph, templeter, size, visited, unvisited, shortest, previous, storage[x], distance + graph[pos][x]);
     }
     }
 }
