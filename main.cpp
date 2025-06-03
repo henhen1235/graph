@@ -17,6 +17,7 @@ void addnode(char name, char templeter[20], int& size);
 int searcher(char search, int size, char templeter[20]);
 void runner(int graph[20][20], char templeter[20], int size, vector<int>& visited, vector<int>& unvisited, vector<int>& shortest, vector<int>& previous, int pos, int distance);
 
+
 int main(){
 int size = 0;//setting up
 char templeter[20];
@@ -163,6 +164,27 @@ it, print, find): ";
     }
     return 0;
 }
+//use later
+ // vistedn.erase(remove(vistedn.begin(), vistedn.end(), current), vistedn.end()); // stack over flow code. This is not mine
+  // unvistedn.push_back(current);
+
+int paths(vector<int>& vistedn, vector<int>& unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add){
+ 
+  int shorttemp = INT_MAX;
+  int shortpos = -1;
+  for(int x = 0; x < size; x++){
+    if(graph[x][current] != -1 && find(vistedn.begin(), vistedn.end(), x) != vistedn.end()){
+      if(shortest[x] > graph[x][current] + add){
+        shortest[x] = graph[x][current] + add;
+        previous[x] = current;
+        if(shortest[x] < shorttemp){
+          shorttemp = shortest[x];
+          shortpos = x;
+        }
+      }
+    }
+  }
+
 
 void runner(int graph[20][20], char templeter[20], int size, vector<int>& visited, vector<int>& unvisited, vector<int>& shortest, vector<int>& previous, int pos, int distance){
   cout << "running: " << pos << endl;//algo for diskjrtas
