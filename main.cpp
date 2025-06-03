@@ -9,7 +9,7 @@ using namespace std;
 void displays(int graph[20][20], int size, char templeter[20]);
 void addnode(char name, char templeter[20], int& size);
 int searcher(char search, int size, char templeter[20]);
-int paths(vector<int> vistedn, vector<int> unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add);
+int paths(vector<int>& vistedn, vector<int>& unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add);
 
 
 int main(){
@@ -141,7 +141,7 @@ char templeter[20];
         int add = 0;
         paths(vistedn, unvistedn, shortest, previous, size, templeter, graph, current, add);
 
-        shortest[]
+        int answer = shortest[end];
       }
       else{
         cout << "Invalid input options are: (addvertex, addnode, deletevertex, deletenode, qu\
@@ -154,24 +154,26 @@ it, print, find): ";
  // vistedn.erase(remove(vistedn.begin(), vistedn.end(), current), vistedn.end()); // stack over flow code. This is not mine
   // unvistedn.push_back(current);
 
-int paths(vector<int> vistedn, vector<int> unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add){
+int paths(vector<int>& vistedn, vector<int>& unvistedn, int shortest[20], int previous[20], int size, char templeter[20], int graph[20][20], int current, int add){
  
-  int shorttemp = -1;
+  int shorttemp = INT_MAX;
   int shortpos = -1;
   for(int x = 0; x < size; x++){
-    if(graph[x][current] != -1){
-      shortest[x] = graph[x][current] + add;
-      previous[x] = current;
-      if(graph[x][current] < shorttemp){
-        shorttemp = graph[x][current];
-        shortpos = x;
+    if(graph[x][current] != -1 && find(vistedn.begin(), vistedn.end(), x) != vistedn.end()){
+      if(shortest[x] > graph[x][current] + add){
+        shortest[x] = graph[x][current] + add;
+        previous[x] = current;
+        if(shortest[x] < shorttemp){
+          shorttemp = shortest[x];
+          shortpos = x;
+        }
       }
     }
   }
 
   vistedn.erase(remove(vistedn.begin(), vistedn.end(), current), vistedn.end()); // stack over flow code. This is not mine
   unvistedn.push_back(current);
-  if(shorttemp == -1){
+  if(shorttemp == INT_MAX){
     return;
   }
   add = add + shorttemp;
