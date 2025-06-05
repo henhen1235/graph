@@ -139,10 +139,8 @@ char templeter[20];
 	previous.push_back(-1);
 	visited.push_back(-1);
       }
-      cout << "initilization done"<< endl;
       shortest[pos] = 0;
       int distance = 0;
-      cout << "starting runner" << endl;
       runner(graph, templeter, size, visited, unvisited, shortest, previous, pos, distance);//runnnig algortihm
 
       char name2;
@@ -150,12 +148,15 @@ char templeter[20];
       cin >> name2;
       int pos2 = searcher(name2, size, templeter);
 
-      for(int x = 0; x< size; x++){
-	      cout << shortest[x] << endl;
+        cout << "shortest path: " << shortest[pos2] << endl;
+        cout << "path: "<< templeter[pos2];
+      while(previous[pos2] != -1){
+        cout <<  "<" <<templeter[previous[pos2]];
+        pos2 = previous[pos2];
+      }
       }
 
-      cout << "shortest path: " << shortest[pos2] << endl;
-      }      
+        
       else{
         cout << "Invalid input options are: (addvertex, addnode, deletevertex, deletenode, qu\
 it, print, find): ";
@@ -165,7 +166,7 @@ it, print, find): ";
 }
 
 void runner(int graph[20][20], char templeter[20], int size, vector<int>& visited, vector<int>& unvisited, vector<int>& shortest, vector<int>& previous, int pos, int distance){
-  cout << "running: " << pos << endl;//algo for diskjrtas
+//algo for diskjrtas
 
   visited[pos] = pos;
   unvisited[pos] = -1;
@@ -173,17 +174,14 @@ void runner(int graph[20][20], char templeter[20], int size, vector<int>& visite
   vector<int> storage;
   for(int x = 0; x< size; x++){
     if(graph[pos][x] != -1 && (shortest[x] == -1 || shortest[x] > distance + graph[pos][x])){
-      cout << "found path: " << x << endl;
       shortest[x] = graph[pos][x] + distance;
       previous[x] = pos;
       storage.push_back(x);
       }
     }    
   
-  cout << "number of paths found: " << storage.size() << endl; 
   for(int x = 0; x< storage.size(); x++){
     if(graph[pos][storage[x]] != -1){
-      cout << "running from: " << pos << " going to: " << storage[x] << endl;
       runner(graph, templeter, size, visited, unvisited, shortest, previous, storage[x], distance + graph[pos][storage[x]]);
     }
     }
